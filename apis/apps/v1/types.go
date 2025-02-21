@@ -657,6 +657,10 @@ type InstanceTemplate struct {
 	// +kubebuilder:validation:Required
 	Name string `json:"name"`
 
+	// +kubebuilder:default=false
+	// +optional
+	FlatNaming *bool `json:"flatNaming,omitempty"`
+
 	// Specifies the number of instances (Pods) to create from this InstanceTemplate.
 	// This field allows setting how many replicated instances of the Component,
 	// with the specific overrides in the InstanceTemplate, are created.

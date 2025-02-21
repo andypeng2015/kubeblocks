@@ -650,7 +650,7 @@ var _ = Describe("instance util test", func() {
 		})
 	})
 
-	Context("GetOrdinalListByTemplateName", func() {
+	Context("getOrdinalListByTemplateName", func() {
 		It("should work well", func() {
 			its := &workloads.InstanceSet{
 				Spec: workloads.InstanceSetSpec{
@@ -689,29 +689,29 @@ var _ = Describe("instance util test", func() {
 			templateNameBar := "bar"
 			templateNameNotFound := "foobar"
 
-			ordinalListDefault, err := GetOrdinalListByTemplateName(its, templateNameDefault)
+			ordinalListDefault, err := getOrdinalListByTemplateName(its, templateNameDefault)
 			Expect(err).Should(BeNil())
 			ordinalListDefaultExpected := []int32{1, 2}
 			Expect(ordinalListDefault).Should(Equal(ordinalListDefaultExpected))
 
-			ordinalListFoo, err := GetOrdinalListByTemplateName(its, templateNameFoo)
+			ordinalListFoo, err := getOrdinalListByTemplateName(its, templateNameFoo)
 			Expect(err).Should(BeNil())
 			ordinalListFooExpected := []int32{0}
 			Expect(ordinalListFoo).Should(Equal(ordinalListFooExpected))
 
-			ordinalListBar, err := GetOrdinalListByTemplateName(its, templateNameBar)
+			ordinalListBar, err := getOrdinalListByTemplateName(its, templateNameBar)
 			Expect(err).Should(BeNil())
 			ordinalListBarExpected := []int32{0, 2, 3}
 			Expect(ordinalListBar).Should(Equal(ordinalListBarExpected))
 
-			ordinalListNotFound, err := GetOrdinalListByTemplateName(its, templateNameNotFound)
+			ordinalListNotFound, err := getOrdinalListByTemplateName(its, templateNameNotFound)
 			Expect(ordinalListNotFound).Should(BeNil())
 			errExpected := fmt.Errorf("template %s not found", templateNameNotFound)
 			Expect(err).Should(Equal(errExpected))
 		})
 	})
 
-	Context("GetOrdinalsByTemplateName", func() {
+	Context("getOrdinalsByTemplateName", func() {
 		It("should work well", func() {
 			its := &workloads.InstanceSet{
 				Spec: workloads.InstanceSetSpec{
@@ -750,7 +750,7 @@ var _ = Describe("instance util test", func() {
 			templateNameBar := "bar"
 			templateNameNotFound := "foobar"
 
-			ordinalsDefault, err := GetOrdinalsByTemplateName(its, templateNameDefault)
+			ordinalsDefault, err := getOrdinalsByTemplateName(its, templateNameDefault)
 			Expect(err).Should(BeNil())
 			ordinalsDefaultExpected := kbappsv1.Ordinals{
 				Ranges: []kbappsv1.Range{
@@ -762,14 +762,14 @@ var _ = Describe("instance util test", func() {
 			}
 			Expect(ordinalsDefault).Should(Equal(ordinalsDefaultExpected))
 
-			ordinalsFoo, err := GetOrdinalsByTemplateName(its, templateNameFoo)
+			ordinalsFoo, err := getOrdinalsByTemplateName(its, templateNameFoo)
 			Expect(err).Should(BeNil())
 			ordinalsFooExpected := kbappsv1.Ordinals{
 				Discrete: []int32{0},
 			}
 			Expect(ordinalsFoo).Should(Equal(ordinalsFooExpected))
 
-			ordinalsBar, err := GetOrdinalsByTemplateName(its, templateNameBar)
+			ordinalsBar, err := getOrdinalsByTemplateName(its, templateNameBar)
 			Expect(err).Should(BeNil())
 			ordinalsBarExpected := kbappsv1.Ordinals{
 				Ranges: []kbappsv1.Range{
@@ -782,14 +782,14 @@ var _ = Describe("instance util test", func() {
 			}
 			Expect(ordinalsBar).Should(Equal(ordinalsBarExpected))
 
-			ordinalsNotFound, err := GetOrdinalsByTemplateName(its, templateNameNotFound)
+			ordinalsNotFound, err := getOrdinalsByTemplateName(its, templateNameNotFound)
 			Expect(ordinalsNotFound).Should(Equal(kbappsv1.Ordinals{}))
 			errExpected := fmt.Errorf("template %s not found", templateNameNotFound)
 			Expect(err).Should(Equal(errExpected))
 		})
 	})
 
-	Context("ConvertOrdinalsToSortedList", func() {
+	Context("convertOrdinalsToSortedList", func() {
 		It("should work well", func() {
 			ordinals := kbappsv1.Ordinals{
 				Ranges: []kbappsv1.Range{
@@ -800,7 +800,7 @@ var _ = Describe("instance util test", func() {
 				},
 				Discrete: []int32{0, 6},
 			}
-			ordinalList, err := ConvertOrdinalsToSortedList(ordinals)
+			ordinalList, err := convertOrdinalsToSortedList(ordinals)
 			Expect(err).Should(BeNil())
 			sets.New(ordinalList...).Equal(sets.New[int32](0, 2, 3, 4, 6))
 		})
@@ -814,7 +814,7 @@ var _ = Describe("instance util test", func() {
 				},
 				Discrete: []int32{0},
 			}
-			ordinalList, err := ConvertOrdinalsToSortedList(ordinals)
+			ordinalList, err := convertOrdinalsToSortedList(ordinals)
 			errExpected := fmt.Errorf("range's end(%v) must >= start(%v)", 2, 4)
 			Expect(err).Should(Equal(errExpected))
 			Expect(ordinalList).Should(BeNil())
